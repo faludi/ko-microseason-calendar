@@ -1,0 +1,578 @@
+{"seasons":[
+  {
+    "number": 1,
+    "kanji": "芹乃栄",
+    "romaji": "Seri sunawachi sakau",
+    "en": "Parsley flourishes",
+    "start": "01-05",
+    "end": "01-10"
+  },
+  {
+    "number": 2,
+    "kanji": "水泉動",
+    "romaji": "Shimizu atataka o fukumu",
+    "en": "Springs thaw",
+    "start": "01-11",
+    "end": "01-15"
+  },
+  {
+    "number": 3,
+    "kanji": "雉始雊",
+    "romaji": "Kiji hajimete naku",
+    "en": "Pheasants start to call",
+    "start": "01-16",
+    "end": "01-20"
+  },
+  {
+    "number": 4,
+    "kanji": "款冬華",
+    "romaji": "Fuki no hana saku",
+    "en": "Butterburs bud",
+    "start": "01-21",
+    "end": "01-25"
+  },
+  {
+    "number": 5,
+    "kanji": "水沢腹堅",
+    "romaji": "Sawazawa kōri tsumeru",
+    "en": "Streams are covered by thick ice",
+    "start": "01-26",
+    "end": "01-30"
+  },
+  {
+    "number": 6,
+    "kanji": "鶏始乳",
+    "romaji": "Niwa tori hajimete toya ni tsuku",
+    "en": "Hens start laying eggs",
+    "start": "01-31",
+    "end": "02-03"
+  },
+  {
+    "number": 7,
+    "kanji": "東風解凍",
+    "romaji": "Harukaze kōri o toku",
+    "en": "East wind melts the ice",
+    "start": "02-04",
+    "end": "02-08"
+  },
+  {
+    "number": 8,
+    "kanji": "黄鶯睍睆",
+    "romaji": "Kōō kenkan su",
+    "en": "Bush warblers start singing",
+    "start": "02-09",
+    "end": "02-13"
+  },
+  {
+    "number": 9,
+    "kanji": "魚上氷",
+    "romaji": "Uo kōri o izuru",
+    "en": "Fish rise up and ice begins to melt",
+    "start": "02-14",
+    "end": "02-18"
+  },
+  {
+    "number": 10,
+    "kanji": "土脉潤起",
+    "romaji": "Tsuchi no shō uruoi okoru",
+    "en": "Rain moistens the soil",
+    "start": "02-19",
+    "end": "02-23"
+  },
+  {
+    "number": 11,
+    "kanji": "霞始靆",
+    "romaji": "Kasumi hajimete tanabiku",
+    "en": "Spring mist lingers",
+    "start": "02-24",
+    "end": "02-28"
+  },
+  {
+    "number": 12,
+    "kanji": "草木萌動",
+    "romaji": "Sōmoku mebae izuru",
+    "en": "Plants show their first buds",
+    "start": "03-01",
+    "end": "03-05"
+  },
+  {
+    "number": 13,
+    "kanji": "蟄虫啓戸",
+    "romaji": "Sugomori mushi to o hiraku",
+    "en": "Hibernating insects surface",
+    "start": "03-06",
+    "end": "03-10"
+  },
+  {
+    "number": 14,
+    "kanji": "桃始笑",
+    "romaji": "Momo hajimete saku",
+    "en": "Peach blossoms begin to bloom",
+    "start": "03-11",
+    "end": "03-15"
+  },
+  {
+    "number": 15,
+    "kanji": "菜虫化蝶",
+    "romaji": "Namushi chō to naru",
+    "en": "Caterpillars become butterflies",
+    "start": "03-16",
+    "end": "03-20"
+  },
+  {
+    "number": 16,
+    "kanji": "雀始巣",
+    "romaji": "Suzume hajimete sukuu",
+    "en": "Sparrows begin to nest",
+    "start": "03-21",
+    "end": "03-25"
+  },
+  {
+    "number": 17,
+    "kanji": "桜始開",
+    "romaji": "Sakura hajimete hiraku",
+    "en": "Cherry blossoms start to bloom",
+    "start": "03-26",
+    "end": "03-30"
+  },
+  {
+    "number": 18,
+    "kanji": "雷乃発声",
+    "romaji": "Kaminari sunawachi koe o hassu",
+    "en": "Distant thunder echoes",
+    "start": "03-31",
+    "end": "04-04"
+  },
+  {
+    "number": 19,
+    "kanji": "玄鳥至",
+    "romaji": "Tsubame kitaru",
+    "en": "Swallows return",
+    "start": "04-05",
+    "end": "04-09"
+  },
+  {
+    "number": 20,
+    "kanji": "鴻雁北",
+    "romaji": "Kōgan kaeru",
+    "en": "Wild geese fly north",
+    "start": "04-10",
+    "end": "04-14"
+  },
+  {
+    "number": 21,
+    "kanji": "虹始見",
+    "romaji": "Niji hajimete arawaru",
+    "en": "First rainbows appear",
+    "start": "04-15",
+    "end": "04-19"
+  },
+  {
+    "number": 22,
+    "kanji": "葭始生",
+    "romaji": "Ashi hajimete shōzu",
+    "en": "Reeds sprout",
+    "start": "04-20",
+    "end": "04-24"
+  },
+  {
+    "number": 23,
+    "kanji": "霜止出苗",
+    "romaji": "Shimo yamite nae izuru",
+    "en": "Last frost, rice seedlings grow",
+    "start": "04-25",
+    "end": "04-29"
+  },
+  {
+    "number": 24,
+    "kanji": "牡丹華",
+    "romaji": "Botan hana saku",
+    "en": "Peonies bloom",
+    "start": "04-30",
+    "end": "05-04"
+  },
+  {
+    "number": 25,
+    "kanji": "蛙始鳴",
+    "romaji": "Kawazu hajimete naku",
+    "en": "Frogs start singing",
+    "start": "05-05",
+    "end": "05-09"
+  },
+  {
+    "number": 26,
+    "kanji": "蚯蚓出",
+    "romaji": "Mimizu izuru",
+    "en": "Earthworms surface",
+    "start": "05-10",
+    "end": "05-14"
+  },
+  {
+    "number": 27,
+    "kanji": "竹笋生",
+    "romaji": "Takenoko shōzu",
+    "en": "Bamboo shoots sprout",
+    "start": "05-15",
+    "end": "05-20"
+  },
+  {
+    "number": 28,
+    "kanji": "蚕起食桑",
+    "romaji": "Kaiko okite kuwa o hamu",
+    "en": "Silkworms eat mulberry leaves",
+    "start": "05-21",
+    "end": "05-25"
+  },
+  {
+    "number": 29,
+    "kanji": "紅花栄",
+    "romaji": "Benibana sakau",
+    "en": "Safflowers bloom",
+    "start": "05-26",
+    "end": "05-30"
+  },
+  {
+    "number": 30,
+    "kanji": "麦秋至",
+    "romaji": "Mugi no toki itaru",
+    "en": "Wheat ripens",
+    "start": "05-31",
+    "end": "06-04"
+  },
+  {
+    "number": 31,
+    "kanji": "蟷螂生",
+    "romaji": "Kamakiri shōzu",
+    "en": "Praying mantises hatch",
+    "start": "06-05",
+    "end": "06-10"
+  },
+  {
+    "number": 32,
+    "kanji": "腐草為蛍",
+    "romaji": "Kusaretaru kusa hotaru to naru",
+    "en": "Rotting grass turns into fireflies",
+    "start": "06-11",
+    "end": "06-15"
+  },
+  {
+    "number": 33,
+    "kanji": "梅子黄",
+    "romaji": "Ume no mi kibamu",
+    "en": "Plums ripen",
+    "start": "06-16",
+    "end": "06-20"
+  },
+  {
+    "number": 34,
+    "kanji": "乃東枯",
+    "romaji": "Natsukarekusa karuru",
+    "en": "Self-heal withers",
+    "start": "06-21",
+    "end": "06-25"
+  },
+  {
+    "number": 35,
+    "kanji": "菖蒲華",
+    "romaji": "Ayame hana saku",
+    "en": "Irises bloom",
+    "start": "06-26",
+    "end": "06-30"
+  },
+  {
+    "number": 36,
+    "kanji": "半夏生",
+    "romaji": "Hange shōzu",
+    "en": "Crow-dipper sprouts",
+    "start": "07-01",
+    "end": "07-06"
+  },
+  {
+    "number": 37,
+    "kanji": "温風至",
+    "romaji": "Atsukaze itaru",
+    "en": "Warm winds blow",
+    "start": "07-07",
+    "end": "07-11"
+  },
+  {
+    "number": 38,
+    "kanji": "蓮始開",
+    "romaji": "Hasu hajimete hiraku",
+    "en": "Lotuses bloom",
+    "start": "07-12",
+    "end": "07-16"
+  },
+  {
+    "number": 39,
+    "kanji": "鷹乃学習",
+    "romaji": "Taka sunawachi gakushū su",
+    "en": "Hawks learn to fly",
+    "start": "07-17",
+    "end": "07-21"
+  },
+  {
+    "number": 40,
+    "kanji": "桐始結花",
+    "romaji": "Kiri hajimete hana o musubu",
+    "en": "Paulownia flowers form seeds",
+    "start": "07-22",
+    "end": "07-27"
+  },
+  {
+    "number": 41,
+    "kanji": "土潤溽暑",
+    "romaji": "Tsuchi uruōte juku sho",
+    "en": "Damp earth swelters",
+    "start": "07-28",
+    "end": "08-01"
+  },
+  {
+    "number": 42,
+    "kanji": "大雨時行",
+    "romaji": "Taiu tokidoki furu",
+    "en": "Frequent large rains",
+    "start": "08-02",
+    "end": "08-06"
+  },
+  {
+    "number": 43,
+    "kanji": "涼風至",
+    "romaji": "Suzukaze itaru",
+    "en": "Cool winds blow",
+    "start": "08-07",
+    "end": "08-11"
+  },
+  {
+    "number": 44,
+    "kanji": "寒蝉鳴",
+    "romaji": "Higurashi naku",
+    "en": "Evening cicadas sing",
+    "start": "08-12",
+    "end": "08-17"
+  },
+  {
+    "number": 45,
+    "kanji": "蒙霧升降",
+    "romaji": "Kiri matō",
+    "en": "Thick fog descends",
+    "start": "08-18",
+    "end": "08-22"
+  },
+  {
+    "number": 46,
+    "kanji": "綿柎開",
+    "romaji": "Wata no hana hiraku",
+    "en": "Cotton flowers bloom",
+    "start": "08-23",
+    "end": "08-27"
+  },
+  {
+    "number": 47,
+    "kanji": "天地始粛",
+    "romaji": "Tenchi hajimete samushi",
+    "en": "Heaven and earth grow solemn",
+    "start": "08-28",
+    "end": "09-01"
+  },
+  {
+    "number": 48,
+    "kanji": "禾乃登",
+    "romaji": "Kokumotsu sunawachi minoru",
+    "en": "Grains ripen",
+    "start": "09-02",
+    "end": "09-06"
+  },
+  {
+    "number": 49,
+    "kanji": "草露白",
+    "romaji": "Kusa no tsuyu shiroshi",
+    "en": "White dew forms on grass",
+    "start": "09-07",
+    "end": "09-11"
+  },
+  {
+    "number": 50,
+    "kanji": "鶺鴒鳴",
+    "romaji": "Sekirei naku",
+    "en": "Wagtails sing",
+    "start": "09-12",
+    "end": "09-17"
+  },
+  {
+    "number": 51,
+    "kanji": "玄鳥去",
+    "romaji": "Tsubame saru",
+    "en": "Swallows leave",
+    "start": "09-18",
+    "end": "09-22"
+  },
+  {
+    "number": 52,
+    "kanji": "雷乃収声",
+    "romaji": "Kaminari sunawachi koe o osamu",
+    "en": "Thunder ceases",
+    "start": "09-23",
+    "end": "09-27"
+  },
+  {
+    "number": 53,
+    "kanji": "蟄虫坏戸",
+    "romaji": "Mushi kakurete to o fusagu",
+    "en": "Insects hole up underground",
+    "start": "09-28",
+    "end": "10-02"
+  },
+  {
+    "number": 54,
+    "kanji": "水始涸",
+    "romaji": "Mizu hajimete karuru",
+    "en": "Water begins to dry up",
+    "start": "10-03",
+    "end": "10-07"
+  },
+  {
+    "number": 55,
+    "kanji": "鴻雁来",
+    "romaji": "Kōgan kitaru",
+    "en": "Wild geese return",
+    "start": "10-08",
+    "end": "10-12"
+  },
+  {
+    "number": 56,
+    "kanji": "菊花開",
+    "romaji": "Kiku no hana hiraku",
+    "en": "Chrysanthemums bloom",
+    "start": "10-13",
+    "end": "10-17"
+  },
+  {
+    "number": 57,
+    "kanji": "蟋蟀在戸",
+    "romaji": "Kirigirisu to ni ari",
+    "en": "Crickets chirp at the door",
+    "start": "10-18",
+    "end": "10-22"
+  },
+  {
+    "number": 58,
+    "kanji": "霜始降",
+    "romaji": "Shimo hajimete furu",
+    "en": "First frost falls",
+    "start": "10-23",
+    "end": "10-27"
+  },
+  {
+    "number": 59,
+    "kanji": "小雨時々降",
+    "romaji": "Kosame tokidoki furu",
+    "en": "Light rains fall",
+    "start": "10-28",
+    "end": "11-01"
+  },
+  {
+    "number": 60,
+    "kanji": "楓蔦黄",
+    "romaji": "Momiji tsuta kibamu",
+    "en": "Maple and ivy\nturn yellow",
+    "start": "11-02",
+    "end": "11-06"
+  },
+  {
+    "number": 61,
+    "kanji": "山茶始開",
+    "romaji": "Tsubaki hajimete hiraku",
+    "en": "Camellias begin to bloom",
+    "start": "11-07",
+    "end": "11-11"
+  },
+  {
+    "number": 62,
+    "kanji": "地始凍",
+    "romaji": "Chi hajimete kōru",
+    "en": "Earth begins to freeze",
+    "start": "11-12",
+    "end": "11-16"
+  },
+  {
+    "number": 63,
+    "kanji": "金盞香",
+    "romaji": "Kinsenka saku",
+    "en": "Daffodils bloom",
+    "start": "11-17",
+    "end": "11-21"
+  },
+  {
+    "number": 64,
+    "kanji": "虹蔵不見",
+    "romaji": "Niji kakurete miezu",
+    "en": "Rainbows hide",
+    "start": "11-22",
+    "end": "11-26"
+  },
+  {
+    "number": 65,
+    "kanji": "朔風払葉",
+    "romaji": "Kitakaze konoha o harau",
+    "en": "Cold north winds scatter leaves",
+    "start": "11-27",
+    "end": "12-01"
+  },
+  {
+    "number": 66,
+    "kanji": "橘始黄",
+    "romaji": "Tachibana hajimete kibamu",
+    "en": "Mandarin oranges ripen",
+    "start": "12-02",
+    "end": "12-06"
+  },
+  {
+    "number": 67,
+    "kanji": "閉塞成冬",
+    "romaji": "Heisoku shite fuyu to naru",
+    "en": "Everything closes up for winter",
+    "start": "12-07",
+    "end": "12-11"
+  },
+  {
+    "number": 68,
+    "kanji": "熊蟄穴",
+    "romaji": "Kuma ana ni komoru",
+    "en": "Bears start hibernating",
+    "start": "12-12",
+    "end": "12-16"
+  },
+  {
+    "number": 69,
+    "kanji": "鱖魚群",
+    "romaji": "Sakana muragaru",
+    "en": "Salmon swim upstream",
+    "start": "12-17",
+    "end": "12-21"
+  },
+  {
+    "number": 70,
+    "kanji": "乃東生",
+    "romaji": "Natsukarekusa shōzu",
+    "en": "Self-heal sprouts",
+    "start": "12-22",
+    "end": "12-25"
+  },
+  {
+    "number": 71,
+    "kanji": "麋角解",
+    "romaji": "O no tsuno o nukuu",
+    "en": "Deer shed antlers",
+    "start": "12-26",
+    "end": "12-30"
+  },
+  {
+    "number": 72,
+    "kanji": "雪下出麦",
+    "romaji": "Yuki watarete mugi nobiru",
+    "en": "Wheat sprouts under snow",
+    "start": "12-31",
+    "end": "01-04"
+  }
+]}
