@@ -1,5 +1,3 @@
-Wind Lantern that flickers based on input via Bluetooth Low Energy from a [Modern Devices wind sensor](https://moderndevice.com/products/wind-sensor).
+Kō microseasons are a traditional Japanese way of dividing the year into 72 microseasons, each lasting about five days. They are closely connected to events in the natural world.
 
-Part of the [Natural Electronics](https://wabitronics.com) project.
-
-![wind lantern](wind_lantern.png)
+This system uses a [https://www.dfrobot.com/product-1799.html](GY-EP204x) mini-thermal printer to announce each season on the morning of its first day.
