@@ -10,7 +10,7 @@ import machine
 import ntptime
 import gy_ep204x
 
-version = "1.0.2"
+version = "1.0.3"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -99,20 +99,21 @@ def get_microseason_for_date(microseasons, month, day):
         if ms['start'] <= date_str <= ms['end']:
             return ms
     return None
+    
 
 def print_microseason(printer, microseason):
     printer.center_justify()
     printer.print('================================\n')
     printer.double_height_width()
     printer.bold(True)
-    printer.print(f"{microseason['en']}\n")
+    printer.print_with_breaks(f"{microseason['en']}", line_length=16)
     printer.bold(False)
     printer.feed(1)
     printer.triple_height_width()
     printer.print(microseason['kanji'] + '\n')
     printer.normal_size()
     printer.feed(1)
-    printer.print(f"{microseason['romaji']} \n")
+    printer.print_with_breaks(f"{microseason['romaji']}", line_length=32)
     printer.normal_size()
     printer.feed_rows(6)
     printer.print(f"{month_names[int(microseason['start'][:2])]} {int(microseason['start'][3:])} - {month_names[int(microseason['end'][:2])]} {int(microseason['end'][3:])}\n")

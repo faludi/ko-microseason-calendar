@@ -2,8 +2,8 @@ import time
 from machine import Pin, UART
 
 class GY_EP204X:
-    def __init__(self):
-        self.uart = UART(1, baudrate=115200, tx=Pin(4), rx=Pin(5))
+    def __init__(self, baudrate=115200, tx_pin=4, rx_pin=5):
+        self.uart = UART(1, baudrate=115200, tx=Pin(tx_pin), rx=Pin(rx_pin))
         self.uart.init(bits=8, parity=None, stop=1)
 
     def send_command(self, command: str):
@@ -13,6 +13,21 @@ class GY_EP204X:
     def print(self, text):
         # Code to send text to the printer
         self.uart.write(text.encode('utf-8'))
+
+    def print_with_breaks(self, text, line_length=32):
+        # Print text broken at spaces to fit within line_length
+        words = text.split(' ')
+        current_line = ''
+        for word in words:
+            if len(current_line) + len(word) + 1 <= line_length:
+                if current_line:
+                    current_line += ' '
+                current_line += word
+            else:
+                self.print(current_line + '\n')
+                current_line = word
+        if current_line:
+            self.print(current_line + '\n')
 
     def _set_timeout(self, period_s: float) -> None:
         # Set a timeout before future commands can be sent.
