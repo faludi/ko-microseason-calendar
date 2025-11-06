@@ -10,7 +10,7 @@ from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.4"
+version = "1.0.5"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -93,11 +93,28 @@ def de_accent(str):
     return str
 
 def get_microseason_for_date(microseasons, month, day):
-    """Returns the microseason for a given month and day."""
-    date_str = f"{month:02d}-{day:02d}"
-    for ms in microseasons['seasons']:
-        if ms['start'] <= date_str <= ms['end']:
-            return ms
+    # Returns the microseason for a given month and day, handling year-end wraparound
+    # ensure month/day are ints
+    try:
+        date = (int(month), int(day))
+    except Exception:
+        return None
+    for ms in microseasons.get('seasons', []):
+        try:
+            sm, sd = map(int, ms['start'].split('-'))
+            em, ed = map(int, ms['end'].split('-'))
+        except Exception:
+            continue
+        start = (sm, sd)
+        end = (em, ed)
+        if start <= end:
+            # normal range within the same year
+            if start <= date <= end:
+                return ms
+        else:
+            # wraparound range (e.g., starts in December, ends in January)
+            if date >= start or date <= end:
+                return ms
     return None
     
 

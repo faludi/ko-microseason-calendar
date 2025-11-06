@@ -4,10 +4,38 @@ import gy_ep204x
 
 printer = gy_ep204x.GY_EP204X()
 printer.reset()
+
+printer.send_command(f"\x1B9{chr(1)}")  # Set to Japanese character set
+
+printer.center_justify()
+# printer.print('================================\n')
+printer.print('/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\n')
+# printer.print('===============[●]=============\n')
+printer.double_height_width()
+printer.bold(True)
+printer.print_with_breaks("Parsley flourishes", line_length=16)
+printer.bold(False)
+printer.feed(1)
+printer.triple_height_width()
+printer.print("芹乃栄\n")
+printer.normal_size()
+printer.feed(1)
+printer.print_with_breaks("Seri sunawachi sakau", line_length=32)
+printer.normal_size()
+printer.feed_rows(6)
+printer.bold(True)
+printer.print(f"Jan 05 - Jan 10\n")
+printer.bold(False)
+printer.print('________________________________\n')
+printer.print('Lesser cold  小寒  Shōkan\n')
+printer.print("Winter  冬  Fuyu\n")
+printer.print('================================\n')
+# printer.print('\n')
+
+
+
 # printer.send_command(f"\x1B7\x0B\x78")  # send heating information
-
-printer.print('Hello World!\n')
-
+# printer.print('Hello World!\n')
 
 
 # printer.center_justify()
@@ -18,7 +46,6 @@ printer.print('Hello World!\n')
 # printer.print_with_breaks("Heaven and earth grow solemn\n",16)
 # printer.print_with_breaks("Everything closes up for winter\n",16)
 # printer.print_with_breaks("Rainbows hide\n",32)
-
 
 
 
