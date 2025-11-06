@@ -4,9 +4,10 @@ import gy_ep204x
 
 printer = gy_ep204x.GY_EP204X()
 printer.reset()
-printer.send_command(f"\x1B9{chr(1)}")  # Set to Japanese character set
+# printer.send_command(f"\x1B7\x0B\x78")  # send heating information
 
-printer.print('Niwa tori hajimete toya ni tsuku\n')
+printer.print('Hello World!\n')
+
 
 
 # printer.center_justify()

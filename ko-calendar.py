@@ -6,18 +6,18 @@ import re
 import json
 import secrets  # separate file that contains your WiFi credentials
 import network
-import machine
+from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.3"
+version = "1.0.4"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
 ssid = secrets.WIFI_SSID  # your SSID name
 password = secrets.WIFI_PASSWORD  # your WiFi password
 
-# cal = {'month': 10, 'day': 30, 'year': 2025, 'wday': 5} # Simulated date for testing
+
 
 month_names = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -126,7 +126,22 @@ def print_multiple(printer, microseasons, numbers):
             if ms['number'] == num:
                 print_microseason(printer, ms)
 
+last_press_time = 0
+def button_pressed(pin):
+    global microseasons,printer, last_press_time
+    current_time = time.ticks_ms()
+    if current_time - last_press_time > 1000:
+        print("Button pressed")
+        last_press_time = current_time
+        microseason = get_microseason_for_date(microseasons, time.localtime()[1], time.localtime()[2])
+        print_microseason(printer, microseason)
+
+button = Pin(6, Pin.IN, Pin.PULL_DOWN)
+button.irq(trigger=Pin.IRQ_RISING, handler=button_pressed)
+
+
 def main():
+    global microseasons,printer
     connection = False
     connection_timeout = 10
     printer = setup_printer()
@@ -135,7 +150,7 @@ def main():
             connection_timeout -= 1
             if connection_timeout == 0:
                 print('Could not connect to Wi-Fi, exiting')
-                machine.reset()
+                reset()
     try:
         ntptime.settime()
         print(f"System time updated to {time.time()} via NTP.")
