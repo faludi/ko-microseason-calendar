@@ -1,9 +1,10 @@
 import time
 from machine import Pin, UART
 
+version = "1.0.2"
 class GY_EP204X:
     def __init__(self, baudrate=115200, tx_pin=4, rx_pin=5):
-        self.uart = UART(1, baudrate=115200, tx=Pin(tx_pin), rx=Pin(rx_pin))
+        self.uart = UART(1, baudrate, tx=Pin(tx_pin), rx=Pin(rx_pin))
         self.uart.init(bits=8, parity=None, stop=1)
 
     def send_command(self, command: str):

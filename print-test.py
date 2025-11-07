@@ -8,8 +8,6 @@ printer.reset()
 printer.send_command(f"\x1B9{chr(1)}")  # Set to Japanese character set
 
 printer.center_justify()
-# printer.print('================================\n')
-printer.print('/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\n')
 # printer.print('===============[●]=============\n')
 printer.double_height_width()
 printer.bold(True)

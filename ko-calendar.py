@@ -10,7 +10,7 @@ from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.6"
+version = "1.0.7"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -47,7 +47,7 @@ def connect_to_wifi():
         return True
     
 def setup_printer():
-    printer = gy_ep204x.GY_EP204X()
+    printer = gy_ep204x.GY_EP204X(baudrate=115200, tx_pin=4, rx_pin=5)
     printer.reset()
     printer.send_command(f"\x1B9{chr(1)}")  # Set to Japanese character set
     return printer
@@ -128,6 +128,7 @@ def print_microseason(printer, microseason):
     printer.bold(False)
     printer.feed(1)
     printer.triple_height_width()
+    printer.send_command(f"\x1B9{chr(1)}")  # Set to Japanese character set
     printer.print(microseason['kanji'] + '\n')
     printer.normal_size()
     printer.feed(1)
@@ -136,7 +137,6 @@ def print_microseason(printer, microseason):
     printer.feed_rows(6)
     printer.print(f"{month_names[int(microseason['start'][:2])]} {int(microseason['start'][3:])} - {month_names[int(microseason['end'][:2])]} {int(microseason['end'][3:])}\n")
     printer.print('================================\n')
-    printer.print('\n')
 
 def print_multiple(printer, microseasons, numbers):
     for num in numbers:
