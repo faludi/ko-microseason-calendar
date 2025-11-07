@@ -10,14 +10,15 @@ from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.5"
+version = "1.0.6"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
 ssid = secrets.WIFI_SSID  # your SSID name
 password = secrets.WIFI_PASSWORD  # your WiFi password
 
-
+UTC_OFFSET = -5  # Adjust as needed for your timezone
+USE_DST = True  # Set to True if your timezone observes Daylight Saving Time
 
 month_names = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -143,6 +144,16 @@ def print_multiple(printer, microseasons, numbers):
             if ms['number'] == num:
                 print_microseason(printer, ms)
 
+def local_time( UTC_offset= -4 ):
+    """Returns local time tuple adjusted for given UTC offset in hours, with rough adjustment for DST."""
+    t = time.time() + (UTC_offset * 3600)
+    if USE_DST:
+        # Simple DST adjustment: add 1 hour if in DST period (e.g., March to October)
+        month = time.localtime(t)[1]
+        if 3 <= month <= 10:
+            t += 3600
+    return time.localtime(t)
+
 last_press_time = 0
 def button_pressed(pin):
     global microseasons,printer, last_press_time
@@ -150,7 +161,7 @@ def button_pressed(pin):
     if current_time - last_press_time > 1000:
         print("Button pressed")
         last_press_time = current_time
-        microseason = get_microseason_for_date(microseasons, time.localtime()[1], time.localtime()[2])
+        microseason = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
         print_microseason(printer, microseason)
 
 button = Pin(6, Pin.IN, Pin.PULL_DOWN)
@@ -178,10 +189,17 @@ def main():
                 break # exit if no connection
             microseasons = load_microseasons()
             # list_microseasons(microseasons)
-            print(f"Month: {time.localtime()[1]}, Day: {time.localtime()[2]}, Year: {time.localtime()[0]}, Weekday: {time.localtime()[6]}, Yearday: {time.localtime()[7]}")
+            print(f"Local Time  Month: {local_time(UTC_OFFSET)[1]}, \
+Day: {local_time(UTC_OFFSET)[2]}, \
+Year: {local_time(UTC_OFFSET)[0]}, \
+Hour: {local_time(UTC_OFFSET)[3]}, \
+Minute: {local_time(UTC_OFFSET)[4]}, \
+Second: {local_time(UTC_OFFSET)[5]}, \
+Weekday: {local_time(UTC_OFFSET)[6]}, \
+Yearday: {local_time(UTC_OFFSET)[7]}")
             # print_multiple(printer, microseasons, [60,61,62,63])  # Example: print microseasons 29 to 32
-            season_today = get_microseason_for_date(microseasons, time.localtime()[1], time.localtime()[2])
-            if season_today is not None and time.localtime()[3] >= 9:  # Print at 9 am or later
+            season_today = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
+            if season_today is not None and local_time(UTC_OFFSET)[3] >= 9:  # Print at 9 am or later
                 load_current_season()
                 if season_today['number'] != load_current_season():
                     store_current_season(season_today)
@@ -192,8 +210,8 @@ def main():
                 print("No microseason found for today's date.")
 
             # Check once every hour, about the top of the hour
-            print(f"Sleeping {60-time.localtime()[4]} minutes until next check.")
-            time.sleep((60 * (60-time.localtime()[4]))-time.localtime()[5])  # Sleep until the top of the next hour 
+            print(f"Sleeping {60-local_time(UTC_OFFSET)[4]} minutes until next check.")
+            time.sleep((60 * (60-local_time(UTC_OFFSET)[4]))-local_time(UTC_OFFSET)[5])  # Sleep until the top of the next hour 
 
 main()
             
