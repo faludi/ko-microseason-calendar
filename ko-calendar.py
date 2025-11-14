@@ -10,7 +10,7 @@ from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.8"
+version = "1.0.9"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -79,9 +79,10 @@ def load_current_season():
         with open('current_season.txt', 'r') as f:
             season_number = int(f.read())
             return season_number
-    except OSError:
-        print("Failed to read current season from file.")
-        return None
+    except (OSError, ValueError):
+        store_current_season({"number": 0}) # initialize file if not present
+        print("Failed to read current season from file, initializing.")
+        return 0
     
 def de_accent(str):
     """Removes common accent characters using regex, converts to lowercase."""
@@ -120,6 +121,7 @@ def get_microseason_for_date(microseasons, month, day):
     
 
 def print_microseason(printer, microseason):
+    print(f"Printing microseason {microseason['number']}: {microseason['en']}")
     printer.center_justify()
     printer.print('================================\n')
     printer.double_height_width()
