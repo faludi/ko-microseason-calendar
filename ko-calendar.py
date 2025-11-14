@@ -10,7 +10,7 @@ from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.7"
+version = "1.0.8"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -135,7 +135,7 @@ def print_microseason(printer, microseason):
     printer.print_with_breaks(f"{microseason['romaji']}", line_length=32)
     printer.normal_size()
     printer.feed_rows(6)
-    printer.print(f"{month_names[int(microseason['start'][:2])]} {int(microseason['start'][3:])} - {month_names[int(microseason['end'][:2])]} {int(microseason['end'][3:])}\n")
+    printer.print(f"{month_names[int(microseason['start'][:2])-1]} {int(microseason['start'][3:])} - {month_names[int(microseason['end'][:2])-1]} {int(microseason['end'][3:])}\n")
     printer.print('================================\n')
 
 def print_multiple(printer, microseasons, numbers):
@@ -153,6 +153,10 @@ def local_time( UTC_offset= -4 ):
         if 3 <= month <= 10:
             t += 3600
     return time.localtime(t)
+
+def show_time():
+    lt = local_time(UTC_OFFSET)
+    print(f"Local time: {lt[0]:04d}-{lt[1]:02d}-{lt[2]:02d} {lt[3]:02d}:{lt[4]:02d}:{lt[5]:02d}")
 
 last_press_time = 0
 def button_pressed(pin):
@@ -189,14 +193,7 @@ def main():
                 break # exit if no connection
             microseasons = load_microseasons()
             # list_microseasons(microseasons)
-            print(f"Local Time  Month: {local_time(UTC_OFFSET)[1]}, \
-Day: {local_time(UTC_OFFSET)[2]}, \
-Year: {local_time(UTC_OFFSET)[0]}, \
-Hour: {local_time(UTC_OFFSET)[3]}, \
-Minute: {local_time(UTC_OFFSET)[4]}, \
-Second: {local_time(UTC_OFFSET)[5]}, \
-Weekday: {local_time(UTC_OFFSET)[6]}, \
-Yearday: {local_time(UTC_OFFSET)[7]}")
+            show_time()
             # print_multiple(printer, microseasons, [60,61,62,63])  # Example: print microseasons 29 to 32
             season_today = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
             if season_today is not None and local_time(UTC_OFFSET)[3] >= 9:  # Print at 9 am or later
