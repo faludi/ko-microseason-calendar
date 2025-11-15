@@ -10,7 +10,7 @@ from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.9"
+version = "1.0.10"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -94,6 +94,12 @@ def de_accent(str):
     str = re.sub(r'[ùúûü]', 'u', str)
     return str
 
+def get_microseason_for_number(microseasons, number):
+    for ms in microseasons.get('seasons', []):
+        if ms['number'] == number:
+            return ms
+    return None
+
 def get_microseason_for_date(microseasons, month, day):
     # Returns the microseason for a given month and day, handling year-end wraparound
     # ensure month/day are ints
@@ -140,11 +146,11 @@ def print_microseason(printer, microseason):
     printer.print(f"{month_names[int(microseason['start'][:2])-1]} {int(microseason['start'][3:])} - {month_names[int(microseason['end'][:2])-1]} {int(microseason['end'][3:])}\n")
     printer.print('================================\n')
 
-def print_multiple(printer, microseasons, numbers):
-    for num in numbers:
-        for ms in microseasons['seasons']:
-            if ms['number'] == num:
-                print_microseason(printer, ms)
+# def print_multiple(printer, microseasons, numbers):
+#     for num in numbers:
+#         for ms in microseasons['seasons']:
+#             if ms['number'] == num:
+#                 print_microseason(printer, ms)
 
 def local_time( UTC_offset= -4 ):
     """Returns local time tuple adjusted for given UTC offset in hours, with rough adjustment for DST."""
@@ -164,11 +170,21 @@ last_press_time = 0
 def button_pressed(pin):
     global microseasons,printer, last_press_time
     current_time = time.ticks_ms()
-    if current_time - last_press_time > 1000:
+    if current_time - last_press_time > 2000:
         print("Button pressed")
         last_press_time = current_time
         microseason = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
+        microseason_number = load_current_season()
         print_microseason(printer, microseason)
+        time.sleep(5)
+        while pin.value() == 1:
+            last_press_time = current_time
+            microseason_number += 1
+            if microseason_number > 72:
+                microseason_number = 1
+            microseason = get_microseason_for_number(microseasons, microseason_number)
+            print_microseason(printer, microseason)
+            time.sleep(1.9)
 
 button = Pin(6, Pin.IN, Pin.PULL_DOWN)
 button.irq(trigger=Pin.IRQ_RISING, handler=button_pressed)
