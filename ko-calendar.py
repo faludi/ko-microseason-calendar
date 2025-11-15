@@ -168,15 +168,15 @@ def show_time():
 
 last_press_time = 0
 def button_pressed(pin):
-    global microseasons,printer, last_press_time
+    global microseasons, printer, last_press_time
     current_time = time.ticks_ms()
-    if current_time - last_press_time > 2000:
+    if current_time - last_press_time > 4000:
         print("Button pressed")
         last_press_time = current_time
         microseason = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
         microseason_number = load_current_season()
         print_microseason(printer, microseason)
-        time.sleep(5)
+        time.sleep(3.9)
         while pin.value() == 1:
             last_press_time = current_time
             microseason_number += 1
