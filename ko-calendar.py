@@ -10,7 +10,7 @@ from machine import Pin, reset
 import ntptime
 import gy_ep204x
 
-version = "1.0.10"
+version = "1.0.13"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -166,25 +166,20 @@ def show_time():
     lt = local_time(UTC_OFFSET)
     print(f"Local time: {lt[0]:04d}-{lt[1]:02d}-{lt[2]:02d} {lt[3]:02d}:{lt[4]:02d}:{lt[5]:02d}")
 
-last_press_time = 0
+last_press_time = manual_season = 0
 def button_pressed(pin):
-    global microseasons, printer, last_press_time
+    global microseasons, printer, last_press_time, manual_season
     current_time = time.ticks_ms()
-    if current_time - last_press_time > 4000:
+    if current_time - last_press_time > 500:
         print("Button pressed")
+        if current_time - last_press_time > 10000:
+            manual_season = load_current_season()
         last_press_time = current_time
-        microseason = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
-        microseason_number = load_current_season()
+        if manual_season > 72:
+                manual_season = 1
+        microseason = get_microseason_for_number(microseasons, manual_season)
         print_microseason(printer, microseason)
-        time.sleep(3.9)
-        while pin.value() == 1:
-            last_press_time = current_time
-            microseason_number += 1
-            if microseason_number > 72:
-                microseason_number = 1
-            microseason = get_microseason_for_number(microseasons, microseason_number)
-            print_microseason(printer, microseason)
-            time.sleep(1.9)
+        manual_season += 1
 
 button = Pin(6, Pin.IN, Pin.PULL_DOWN)
 button.irq(trigger=Pin.IRQ_RISING, handler=button_pressed)
@@ -212,7 +207,6 @@ def main():
             microseasons = load_microseasons()
             # list_microseasons(microseasons)
             show_time()
-            # print_multiple(printer, microseasons, [60,61,62,63])  # Example: print microseasons 29 to 32
             season_today = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
             if season_today is not None and local_time(UTC_OFFSET)[3] >= 9:  # Print at 9 am or later
                 load_current_season()
