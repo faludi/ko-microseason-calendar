@@ -1,4 +1,5 @@
 # Kō microseasons are a traditional Japanese way of dividing the year into 72 microseasons, each lasting about five days.
+# https://www.nippon.com/en/features/h00124/
 # by Rob Faludi 2025
 
 import time
@@ -14,8 +15,8 @@ version = "1.0.15"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
-ssid = secrets.WIFI_SSID  # your SSID name
-password = secrets.WIFI_PASSWORD  # your WiFi password
+ssid = secrets.WIFI_SSID  # your SSID name stored in secrets.py
+password = secrets.WIFI_PASSWORD  # your WiFi password stored in secrets.py
 
 UTC_OFFSET = -5  # Adjust as needed for your timezone
 USE_DST = True  # Set to True if your timezone observes Daylight Saving Time
