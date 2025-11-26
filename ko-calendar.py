@@ -6,11 +6,11 @@ import re
 import json
 import secrets  # separate file that contains your WiFi credentials
 import network
-from machine import Pin, reset
+from machine import Pin, reset, RTC
 import ntptime
 import gy_ep204x
 
-version = "1.0.13"
+version = "1.0.15"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -19,6 +19,9 @@ password = secrets.WIFI_PASSWORD  # your WiFi password
 
 UTC_OFFSET = -5  # Adjust as needed for your timezone
 USE_DST = True  # Set to True if your timezone observes Daylight Saving Time
+
+show_macro_season = True  # Set to True to print macro seasons
+show_mini_season = True  # Set to True to print mini seasons
 
 month_names = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -49,12 +52,12 @@ def connect_to_wifi():
 def setup_printer():
     printer = gy_ep204x.GY_EP204X(baudrate=115200, tx_pin=4, rx_pin=5)
     printer.reset()
-    printer.send_command(f"\x1B9{chr(1)}")  # Set to Japanese character set
+    printer.set_japanese_charset()  # Set to Japanese character set
     return printer
 
 def load_microseasons():
     try:
-        with open('microseasons.json', 'r') as f:
+        with open('microseasons_ko.json', 'r') as f:
             microseasons_str = f.read()
             microseasons = json.loads(microseasons_str)
             # print(microseasons)
@@ -62,6 +65,88 @@ def load_microseasons():
         print("Failed to open json file.")
         microseasons = []
     return microseasons
+
+def load_mini_seasons():
+    try:
+        with open('mini_seasons_sekki.json', 'r') as f:
+            mini_seasons_str = f.read()
+            mini_seasons = json.loads(mini_seasons_str)
+            # print(mini_seasons)
+    except OSError:
+        print("Failed to open json file.")
+        mini_seasons = []
+    return mini_seasons
+
+def load_seasons():
+    try:
+        with open('seasons_shiki.json', 'r') as f:
+            seasons_str = f.read()
+            seasons = json.loads(seasons_str)
+            # print(seasons)
+    except OSError:
+        print("Failed to open json file.")
+        seasons = []
+    return seasons
+
+def print_macro_season(printer):
+    macro_seasons = load_seasons()
+    for macro in macro_seasons:
+        try:
+            sm, sd = map(int, macro['start'].split('-'))
+            em, ed = map(int, macro['end'].split('-'))
+        except Exception:
+            continue
+        if sm == local_time(UTC_OFFSET)[1] and sd == local_time(UTC_OFFSET)[2]:
+            print(f"Printing season: {macro['en']}")
+            printer.center_justify()
+            printer.print('===============[]=============\n')
+            printer.double_height_width()
+            printer.bold(True)
+            printer.print_with_breaks(f"{macro['en']}", line_length=16)
+            printer.bold(False)
+            printer.feed(1)
+            printer.set_japanese_charset() # Set to Japanese character set
+            printer.triple_height_width()
+            printer.print(macro['kanji'] + '\n')
+            printer.normal_size()
+            printer.feed_rows(6)
+            printer.print_with_breaks(f"{macro['romaji']}", line_length=32)
+            printer.normal_size()
+            printer.feed(1)
+            printer.bold(True)
+            printer.print(f"{month_names[sm-1]} {sd} - {month_names[em-1]} {ed}\n")
+            printer.bold(False)
+            printer.feed(1)
+
+def print_mini_season(printer):
+    mini_seasons = load_mini_seasons()
+    for mini in mini_seasons:
+        try:
+            sm, sd = map(int, mini['start'].split('-'))
+            em, ed = map(int, mini['end'].split('-'))
+        except Exception:
+            continue
+        if sm == local_time(UTC_OFFSET)[1] and sd == local_time(UTC_OFFSET)[2]:
+            print(f"Printing mini season: {mini['en']}")
+            printer.center_justify()
+            printer.print('===============[ ]=============\n')
+            printer.double_height_width()
+            printer.bold(True)
+            printer.print_with_breaks(f"{mini['en']}", line_length=16)
+            printer.bold(False)
+            printer.feed(1)
+            printer.set_japanese_charset()  # Set to Japanese character set
+            printer.triple_height_width()
+            printer.print(mini['kanji'] + '\n')
+            printer.normal_size()
+            printer.feed_rows(6)
+            printer.print_with_breaks(f"{mini['romaji']}", line_length=32)
+            printer.normal_size()
+            printer.feed(1)
+            printer.bold(True)
+            printer.print(f"{month_names[sm-1]} {sd} - {month_names[em-1]} {ed}\n")
+            printer.bold(False)
+            printer.feed(1)
 
 def list_microseasons(microseasons):
     for ms in microseasons['seasons']:
@@ -123,28 +208,30 @@ def get_microseason_for_date(microseasons, month, day):
             # wraparound range (e.g., starts in December, ends in January)
             if date >= start or date <= end:
                 return ms
-    return None
-    
+    return None 
 
 def print_microseason(printer, microseason):
     print(f"Printing microseason {microseason['number']}: {microseason['en']}")
     printer.center_justify()
-    printer.print('================================\n')
+    printer.print('===============[●]=============\n')
     printer.double_height_width()
     printer.bold(True)
     printer.print_with_breaks(f"{microseason['en']}", line_length=16)
     printer.bold(False)
     printer.feed(1)
     printer.triple_height_width()
-    printer.send_command(f"\x1B9{chr(1)}")  # Set to Japanese character set
+    printer.set_japanese_charset()  # Set to Japanese character set
     printer.print(microseason['kanji'] + '\n')
     printer.normal_size()
-    printer.feed(1)
+    printer.feed_rows(6)
     printer.print_with_breaks(f"{microseason['romaji']}", line_length=32)
     printer.normal_size()
-    printer.feed_rows(6)
+    printer.feed(1)
+    printer.bold(True)
     printer.print(f"{month_names[int(microseason['start'][:2])-1]} {int(microseason['start'][3:])} - {month_names[int(microseason['end'][:2])-1]} {int(microseason['end'][3:])}\n")
-    printer.print('================================\n')
+    printer.bold(False)
+    printer.feed(1)
+    printer.print('===============[●]=============\n')
 
 # def print_multiple(printer, microseasons, numbers):
 #     for num in numbers:
@@ -199,6 +286,9 @@ def main():
     try:
         ntptime.settime()
         print(f"System time updated to {time.time()} via NTP.")
+        # For testing, you can hard-code a date: (year, month, day, weekday, hour, minute, second, millisecond)
+        # RTC().datetime((2026, 11, 7, 2, 20, 31, 0, 0))
+        # print(f"System time updated to {time.time()} hard-coded.")
     except:
         print("Failed to update time via NTP.")
     while True:
@@ -208,15 +298,18 @@ def main():
             # list_microseasons(microseasons)
             show_time()
             season_today = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
+            # print(season_today)
             if season_today is not None and local_time(UTC_OFFSET)[3] >= 9:  # Print at 9 am or later
                 load_current_season()
                 if season_today['number'] != load_current_season():
                     store_current_season(season_today)
+                    if show_macro_season: print_macro_season(printer)
+                    if show_mini_season: print_mini_season(printer)
                     print_microseason(printer, season_today)
                 else:
                     print(f"Microseason {season_today['number']} already printed for today's date.")
             else:
-                print("No microseason found for today's date.")
+                print("No microseason found for today's date or too early to print.")
 
             # Check once every hour, about the top of the hour
             print(f"Sleeping {60-local_time(UTC_OFFSET)[4]} minutes until next check.")

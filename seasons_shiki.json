@@ -1,0 +1,34 @@
+[
+ {
+   "macro_season_num": 1,
+   "kanji": "春",
+   "romaji": "Haru",
+   "en": "Spring",
+   "start": "02-04",
+   "end": "05-04"
+ },
+ {
+   "macro_season_num": 2,
+   "kanji": "夏",
+   "romaji": "Natsu",
+   "en": "Summer",
+   "start": "05-05",
+   "end": "08-07"
+ },
+ {
+   "macro_season_num": 3,
+   "kanji": "秋",
+   "romaji": "Aki",
+   "en": "Fall",
+   "start": "08-08",
+   "end": "11-06"
+ },
+ {
+   "macro_season_num": 4,
+   "kanji": "冬",
+   "romaji": "Fuyu",
+   "en": "Winter",
+   "start": "11-07",
+   "end": "02-03"
+ }
+]

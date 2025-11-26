@@ -1,7 +1,7 @@
 import time
 from machine import Pin, UART
 
-version = "1.0.2"
+version = "1.0.3"
 class GY_EP204X:
     def __init__(self, baudrate=115200, tx_pin=4, rx_pin=5):
         self.uart = UART(1, baudrate, tx=Pin(tx_pin), rx=Pin(rx_pin))
@@ -67,11 +67,29 @@ class GY_EP204X:
         else:
             self.send_command("\x1BG\x00")
 
+    def underline(self, enable=True):
+        if enable:
+            self.send_command("\x1B-\x01")
+        else:
+            self.send_command("\x1B-\x00")
+
+    def left_justify(self):
+        self.send_command("\x1Ba\x00")
+
+    def right_justify(self):
+        self.send_command("\x1Ba\x02")
+
+    def highlight(self, enable=True):
+        if enable:
+            self.send_command("\x1DB\x01")
+        else:
+            self.send_command("\x1DB\x00")
+
     def normal_size(self):
         self.send_command("\x1D!\x00")
 
     def set_japanese_charset(self):
-        self.send_command("\x1B9{chr(1)}")
+        self.send_command("\x1B9\x01")
 
     def reset(self):
         self.send_command("\x1B@")

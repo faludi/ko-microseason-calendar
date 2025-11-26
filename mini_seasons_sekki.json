@@ -1,0 +1,194 @@
+[
+ {
+   "sekki_num": 1,
+   "kanji": "立春",
+   "romaji": "Risshun",
+   "en": "Beginning of spring",
+   "start": "02-04",
+   "end": "02-18"
+ },
+ {
+   "sekki_num": 2,
+   "kanji": "雨水",
+   "romaji": "Usui",
+   "en": "Rainwater",
+   "start": "02-19",
+   "end": "03-05"
+ },
+ {
+   "sekki_num": 3,
+   "kanji": "啓蟄",
+   "romaji": "Keichitsu",
+   "en": "Insects awaken",
+   "start": "03-06",
+   "end": "03-20"
+ },
+ {
+   "sekki_num": 4,
+   "kanji": "春分",
+   "romaji": "Shunbun",
+   "en": "Spring equinox",
+   "start": "03-21",
+   "end": "04-04"
+ },
+ {
+   "sekki_num": 5,
+   "kanji": "清明",
+   "romaji": "Seimei",
+   "en": "Pure and clear",
+   "start": "04-05",
+   "end": "04-19"
+ },
+ {
+   "sekki_num": 6,
+   "kanji": "穀雨",
+   "romaji": "Kokuu",
+   "en": "Grain rains",
+   "start": "04-20",
+   "end": "05-04"
+ },
+ {
+   "sekki_num": 7,
+   "kanji": "立夏",
+   "romaji": "Rikka",
+   "en": "Beginning of summer",
+   "start": "05-05",
+   "end": "05-20"
+ },
+ {
+   "sekki_num": 8,
+   "kanji": "小満",
+   "romaji": "Shōman",
+   "en": "Lesser ripening",
+   "start": "05-21",
+   "end": "06-05"
+ },
+ {
+   "sekki_num": 9,
+   "kanji": "芒種",
+   "romaji": "Bōshu",
+   "en": "Grain beards and seeds",
+   "start": "06-06",
+   "end": "06-20"
+ },
+ {
+   "sekki_num": 10,
+   "kanji": "夏至",
+   "romaji": "Geshi",
+   "en": "Summer solstice",
+   "start": "06-21",
+   "end": "07-06"
+ },
+ {
+   "sekki_num": 11,
+   "kanji": "小暑",
+   "romaji": "Shōsho",
+   "en": "Lesser heat",
+   "start": "07-07",
+   "end": "07-22"
+ },
+ {
+   "sekki_num": 12,
+   "kanji": "大暑 ",
+   "romaji": "Taisho",
+   "en": "Greater heat",
+   "start": "07-23",
+   "end": "08-07"
+ },
+ {
+   "sekki_num": 13,
+   "kanji": "立秋",
+   "romaji": "Risshū",
+   "en": "Beginning of autumn",
+   "start": "08-08",
+   "end": "08-22"
+ },
+ {
+   "sekki_num": 14,
+   "kanji": "処暑",
+   "romaji": "Shosho",
+   "en": "Manageable heat",
+   "start": "08-23",
+   "end": "09-07"
+ },
+ {
+   "sekki_num": 15,
+   "kanji": "白露",
+   "romaji": "Hakuro",
+   "en": "White dew",
+   "start": "09-08",
+   "end": "09-22"
+ },
+ {
+   "sekki_num": 16,
+   "kanji": "秋分",
+   "romaji": "Shūbun",
+   "en": "Autumn equinox",
+   "start": "09-23",
+   "end": "10-07"
+ },
+ {
+   "sekki_num": 17,
+   "kanji": "寒露",
+   "romaji": "Kanro",
+   "en": "Cold dew",
+   "start": "10-08",
+   "end": "10-22"
+ },
+ {
+   "sekki_num": 18,
+   "kanji": "霜降",
+   "romaji": "Sōkō",
+   "en": "Frost falls",
+   "start": "10-23",
+   "end": "11-06"
+ },
+ {
+   "sekki_num": 19,
+   "kanji": "立冬",
+   "romaji": "Rittō",
+   "en": "Beginning of winter",
+   "start": "11-07",
+   "end": "11-21"
+ },
+ {
+   "sekki_num": 20,
+   "kanji": "小雪",
+   "romaji": "Shōsetsu",
+   "en": "Lesser snow",
+   "start": "11-22",
+   "end": "12-06"
+ },
+ {
+   "sekki_num": 21,
+   "kanji": "大雪",
+   "romaji": "Taisetsu",
+   "en": "Greater snow",
+   "start": "12-07",
+   "end": "12-21"
+ },
+ {
+   "sekki_num": 22,
+   "kanji": "冬至",
+   "romaji": "Tōji",
+   "en": "Winter solstice",
+   "start": "12-22",
+   "end": "01-04"
+ },
+ {
+   "sekki_num": 23,
+   "kanji": "小寒",
+   "romaji": "Shōkan",
+   "en": "Lesser cold",
+   "start": "01-05",
+   "end": "01-19"
+ },
+ {
+   "sekki_num": 24,
+   "kanji": "大寒",
+   "romaji": "Daikan",
+   "en": "Greater cold",
+   "start": "01-20",
+   "end": "02-03"
+ }
+]
