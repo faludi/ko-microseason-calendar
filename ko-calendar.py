@@ -11,7 +11,7 @@ from machine import Pin, reset, RTC
 import ntptime
 import gy_ep204x
 
-version = "1.0.15"
+version = "1.0.17"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -28,6 +28,8 @@ month_names = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
+LED = Pin("LED", Pin.OUT)      # digital output for status LED
+
 def connect_to_wifi():
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
@@ -39,6 +41,7 @@ def connect_to_wifi():
             break
         connection_timeout -= 1
         print('Waiting for Wi-Fi connection...')
+        blink_led(1, 0.1)
         time.sleep(1)
     # Check if connection is successful
     if wlan.status() != 3:
@@ -240,6 +243,13 @@ def print_microseason(printer, microseason):
 #             if ms['number'] == num:
 #                 print_microseason(printer, ms)
 
+def blink_led(times, interval=0.2):
+    for _ in range(times):
+        LED.on()
+        time.sleep(interval)
+        LED.off()
+        time.sleep(interval)
+
 def local_time( UTC_offset= -4 ):
     """Returns local time tuple adjusted for given UTC offset in hours, with rough adjustment for DST."""
     t = time.time() + (UTC_offset * 3600)
@@ -260,6 +270,7 @@ def button_pressed(pin):
     current_time = time.ticks_ms()
     if current_time - last_press_time > 500:
         print("Button pressed")
+        blink_led(1, 0.1)
         if current_time - last_press_time > 10000:
             manual_season = load_current_season()
         last_press_time = current_time
@@ -269,14 +280,15 @@ def button_pressed(pin):
         print_microseason(printer, microseason)
         manual_season += 1
 
-button = Pin(6, Pin.IN, Pin.PULL_DOWN)
-button.irq(trigger=Pin.IRQ_RISING, handler=button_pressed)
+button = Pin(6, Pin.IN, Pin.PULL_UP)
+button.irq(trigger=Pin.IRQ_FALLING, handler=button_pressed)
 
 
 def main():
     global microseasons,printer
     connection = False
     connection_timeout = 10
+    blink_led(3, 0.1)
     printer = setup_printer()
     while not connection:
             connection = connect_to_wifi()
@@ -293,6 +305,7 @@ def main():
     except:
         print("Failed to update time via NTP.")
     while True:
+            blink_led(2, 0.1)
             if not connection:
                 break # exit if no connection
             microseasons = load_microseasons()
