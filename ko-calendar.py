@@ -11,7 +11,7 @@ from machine import Pin, reset, RTC
 import ntptime
 import gy_ep204x
 
-version = "1.0.17"
+version = "1.0.18"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -264,28 +264,72 @@ def show_time():
     lt = local_time(UTC_OFFSET)
     print(f"Local time: {lt[0]:04d}-{lt[1]:02d}-{lt[2]:02d} {lt[3]:02d}:{lt[4]:02d}:{lt[5]:02d}")
 
-last_press_time = manual_season = 0
-def button_pressed(pin):
-    global microseasons, printer, last_press_time, manual_season
-    current_time = time.ticks_ms()
-    if current_time - last_press_time > 500:
-        print("Button pressed")
+def formatted_time(lt):
+    return(f"UTC: {lt[0]:04d}-{lt[1]:02d}-{lt[2]:02d} {lt[3]:02d}:{lt[4]:02d}:{lt[5]:02d}")
+
+def get_ntp(retries=False):
+    global next_ntp_sync
+    ntp_set = False
+    while not ntp_set:
+        try:
+            print('Syncing time via NTP...')
+            ntptime.settime()
+            print(f"System time updated to {formatted_time(time.localtime())} via NTP.")
+            next_ntp_sync = time.time() + 43200 # update every 12 hours
+            ntp_set = True
+        except Exception as e:
+            print("Failed to update time via NTP.", e)
+            if retries:
+                print('Retrying in 5 seconds...')
+                time.sleep(5)
+                ntp_set = False
+            else:
+                next_ntp_sync = time.time() + 600  # try again in 10 minutes
+                print("Trying again in 10 minutes.")
+
+# last_press_time = manual_season = 0
+# def button_pressed(pin):
+#     global microseasons, printer, last_press_time, manual_season
+#     current_time = time.ticks_ms()
+#     if current_time - last_press_time > 500:
+#         print("Button pressed")
+#         blink_led(1, 0.1)
+#         if current_time - last_press_time > 10000:
+#             manual_season = load_current_season()
+#         last_press_time = current_time
+#         if manual_season > 72:
+#                 manual_season = 1
+#         microseason = get_microseason_for_number(microseasons, manual_season)
+#         print_microseason(printer, microseason)
+#         manual_season += 1
+
+
+def check_button():
+    if button.value() == 0:
+        # print current microseason
+        print('Button pressed')
         blink_led(1, 0.1)
-        if current_time - last_press_time > 10000:
-            manual_season = load_current_season()
-        last_press_time = current_time
-        if manual_season > 72:
-                manual_season = 1
+        manual_season = load_current_season()
         microseason = get_microseason_for_number(microseasons, manual_season)
         print_microseason(printer, microseason)
-        manual_season += 1
+        time.sleep(1.5)
+        while button.value() == 0:
+            # print additional microseasons while button held down
+            manual_season += 1
+            if manual_season > 72:
+                    manual_season = 1
+            microseason = get_microseason_for_number(microseasons, manual_season)
+            print_microseason(printer, microseason)
+            time.sleep(1.5)
+            
 
 button = Pin(6, Pin.IN, Pin.PULL_UP)
-button.irq(trigger=Pin.IRQ_FALLING, handler=button_pressed)
+# button.irq(trigger=Pin.IRQ_FALLING, handler=button_pressed)
 
+next_ntp_sync = 0
 
 def main():
-    global microseasons,printer
+    global microseasons, printer, next_ntp_sync
     connection = False
     connection_timeout = 10
     blink_led(3, 0.1)
@@ -296,14 +340,7 @@ def main():
             if connection_timeout == 0:
                 print('Could not connect to Wi-Fi, exiting')
                 reset()
-    try:
-        ntptime.settime()
-        print(f"System time updated to {time.time()} via NTP.")
-        # For testing, you can hard-code a date: (year, month, day, weekday, hour, minute, second, millisecond)
-        # RTC().datetime((2026, 11, 7, 2, 20, 31, 0, 0))
-        # print(f"System time updated to {time.time()} hard-coded.")
-    except:
-        print("Failed to update time via NTP.")
+    get_ntp(retries=True)
     while True:
             blink_led(2, 0.1)
             if not connection:
@@ -311,6 +348,8 @@ def main():
             microseasons = load_microseasons()
             # list_microseasons(microseasons)
             show_time()
+            if time.time() >= next_ntp_sync:
+                get_ntp(retries=False)
             season_today = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
             # print(season_today)
             if season_today is not None and local_time(UTC_OFFSET)[3] >= 9:  # Print at 9 am or later
@@ -324,10 +363,13 @@ def main():
                     print(f"Microseason {season_today['number']} already printed for today's date.")
             else:
                 print("No microseason found for today's date or too early to print.")
-
             # Check once every hour, about the top of the hour
             print(f"Sleeping {60-local_time(UTC_OFFSET)[4]} minutes until next check.")
-            time.sleep((60 * (60-local_time(UTC_OFFSET)[4]))-local_time(UTC_OFFSET)[5])  # Sleep until the top of the next hour 
+            sleep_time = (60 * (60-local_time(UTC_OFFSET)[4]))-local_time(UTC_OFFSET)[5]  # Sleep until the top of the next hour 
+            start_time = time.time()
+            while (time.time() - start_time) < sleep_time:
+                check_button()
+                time.sleep(0.1)
 
 main()
             
