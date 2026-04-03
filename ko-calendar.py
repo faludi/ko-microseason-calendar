@@ -11,7 +11,7 @@ from machine import Pin, reset, RTC
 import ntptime
 import gy_ep204x
 
-version = "1.0.18"
+version = "1.1.0"
 print("Ko Microseason Calendar - Version:", version)
 
 # Wi-Fi credentials
@@ -102,25 +102,12 @@ def print_macro_season(printer):
             continue
         if sm == local_time(UTC_OFFSET)[1] and sd == local_time(UTC_OFFSET)[2]:
             print(f"Printing season: {macro['en']}")
-            printer.center_justify()
-            printer.print('===============[]=============\n')
-            printer.double_height_width()
             printer.bold(True)
-            printer.print_with_breaks(f"{macro['en']}", line_length=16)
+            printer.print(f"{macro['en']}  {macro['kanji']}   {macro['romaji']}\n")
             printer.bold(False)
-            printer.feed(1)
-            printer.set_japanese_charset() # Set to Japanese character set
-            printer.triple_height_width()
-            printer.print(macro['kanji'] + '\n')
-            printer.normal_size()
-            printer.feed_rows(6)
-            printer.print_with_breaks(f"{macro['romaji']}", line_length=32)
-            printer.normal_size()
-            printer.feed(1)
-            printer.bold(True)
             printer.print(f"{month_names[sm-1]} {sd} - {month_names[em-1]} {ed}\n")
-            printer.bold(False)
-            printer.feed(1)
+            printer.print('-------------------------------\n')
+
 
 def print_mini_season(printer):
     mini_seasons = load_mini_seasons()
@@ -132,25 +119,11 @@ def print_mini_season(printer):
             continue
         if sm == local_time(UTC_OFFSET)[1] and sd == local_time(UTC_OFFSET)[2]:
             print(f"Printing mini season: {mini['en']}")
-            printer.center_justify()
-            printer.print('===============[ ]=============\n')
-            printer.double_height_width()
             printer.bold(True)
-            printer.print_with_breaks(f"{mini['en']}", line_length=16)
+            printer.print(f'{mini['en']} {mini['kanji']} {mini['romaji']}\n')
             printer.bold(False)
-            printer.feed(1)
-            printer.set_japanese_charset()  # Set to Japanese character set
-            printer.triple_height_width()
-            printer.print(mini['kanji'] + '\n')
-            printer.normal_size()
-            printer.feed_rows(6)
-            printer.print_with_breaks(f"{mini['romaji']}", line_length=32)
-            printer.normal_size()
-            printer.feed(1)
-            printer.bold(True)
             printer.print(f"{month_names[sm-1]} {sd} - {month_names[em-1]} {ed}\n")
-            printer.bold(False)
-            printer.feed(1)
+            printer.print('===============================\n')
 
 def list_microseasons(microseasons):
     for ms in microseasons['seasons']:
@@ -216,16 +189,15 @@ def get_microseason_for_date(microseasons, month, day):
 
 def print_microseason(printer, microseason):
     print(f"Printing microseason {microseason['number']}: {microseason['en']}")
-    printer.center_justify()
-    printer.print('===============[●]=============\n')
     printer.double_height_width()
     printer.bold(True)
     printer.print_with_breaks(f"{microseason['en']}", line_length=16)
     printer.bold(False)
-    printer.feed(1)
+    # printer.feed(1)
+    printer.feed_rows(8)
+    printer.feed_rows(8)
     printer.triple_height_width()
-    printer.set_japanese_charset()  # Set to Japanese character set
-    printer.print(microseason['kanji'] + '\n')
+    printer.print(f'{microseason['kanji']}\n')
     printer.normal_size()
     printer.feed_rows(6)
     printer.print_with_breaks(f"{microseason['romaji']}", line_length=32)
@@ -237,11 +209,10 @@ def print_microseason(printer, microseason):
     printer.feed(1)
     printer.print('===============[●]=============\n')
 
-# def print_multiple(printer, microseasons, numbers):
-#     for num in numbers:
-#         for ms in microseasons['seasons']:
-#             if ms['number'] == num:
-#                 print_microseason(printer, ms)
+def print_header(printer):
+    printer.center_justify()
+    printer.set_japanese_charset()  # Set to Japanese character set
+    printer.print('===============[●]=============\n')
 
 def blink_led(times, interval=0.2):
     for _ in range(times):
@@ -287,22 +258,6 @@ def get_ntp(retries=False):
                 next_ntp_sync = time.time() + 600  # try again in 10 minutes
                 print("Trying again in 10 minutes.")
 
-# last_press_time = manual_season = 0
-# def button_pressed(pin):
-#     global microseasons, printer, last_press_time, manual_season
-#     current_time = time.ticks_ms()
-#     if current_time - last_press_time > 500:
-#         print("Button pressed")
-#         blink_led(1, 0.1)
-#         if current_time - last_press_time > 10000:
-#             manual_season = load_current_season()
-#         last_press_time = current_time
-#         if manual_season > 72:
-#                 manual_season = 1
-#         microseason = get_microseason_for_number(microseasons, manual_season)
-#         print_microseason(printer, microseason)
-#         manual_season += 1
-
 
 def check_button():
     if button.value() == 0:
@@ -311,6 +266,7 @@ def check_button():
         blink_led(1, 0.1)
         manual_season = load_current_season()
         microseason = get_microseason_for_number(microseasons, manual_season)
+        print_header(printer)
         print_microseason(printer, microseason)
         time.sleep(1.5)
         while button.value() == 0:
@@ -319,12 +275,12 @@ def check_button():
             if manual_season > 72:
                     manual_season = 1
             microseason = get_microseason_for_number(microseasons, manual_season)
+            print_header(printer)
             print_microseason(printer, microseason)
             time.sleep(1.5)
             
 
 button = Pin(6, Pin.IN, Pin.PULL_UP)
-# button.irq(trigger=Pin.IRQ_FALLING, handler=button_pressed)
 
 next_ntp_sync = 0
 
@@ -350,12 +306,16 @@ def main():
             show_time()
             if time.time() >= next_ntp_sync:
                 get_ntp(retries=False)
+            # Set time manually to test microseason printing:
+            # RTC().datetime((2025, 5, 5, 1, 13, 0, 0, 0))   # year, month, day, weekday, hour, minute, second, subseconds
+            show_time()
             season_today = get_microseason_for_date(microseasons, local_time(UTC_OFFSET)[1], local_time(UTC_OFFSET)[2])
             # print(season_today)
             if season_today is not None and local_time(UTC_OFFSET)[3] >= 9:  # Print at 9 am or later
                 load_current_season()
                 if season_today['number'] != load_current_season():
                     store_current_season(season_today)
+                    print_header(printer)
                     if show_macro_season: print_macro_season(printer)
                     if show_mini_season: print_mini_season(printer)
                     print_microseason(printer, season_today)
