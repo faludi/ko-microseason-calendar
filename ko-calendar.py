@@ -11,8 +11,12 @@ from machine import Pin, reset, RTC
 import ntptime
 import gy_ep204x
 
-version = "1.1.0"
+version = "1.1.1"
 print("Ko Microseason Calendar - Version:", version)
+
+DEMO_MODE = True  # Set to True to enable demo mode
+if DEMO_MODE:
+    print("DEMO MODE ENABLED")
 
 # Wi-Fi credentials
 ssid = secrets.WIFI_SSID  # your SSID name stored in secrets.py
@@ -260,27 +264,48 @@ def get_ntp(retries=False):
 
 
 def check_button():
+    # In non-demo mode, print current season when button is pressed, and cycle through microseasons while held down
+    # In demo mode, print the current microseason on the first press, then print the next microseason on the next press, cycling through all microseasons with each subsequent press.
     if button.value() == 0:
-        # print current microseason
-        print('Button pressed')
-        blink_led(1, 0.1)
-        manual_season = load_current_season()
-        microseason = get_microseason_for_number(microseasons, manual_season)
-        print_header(printer)
-        print_microseason(printer, microseason)
-        time.sleep(1.5)
-        while button.value() == 0:
-            # print additional microseasons while button held down
-            manual_season += 1
-            if manual_season > 72:
-                    manual_season = 1
+        if DEMO_MODE:
+            global demo_season
+            if demo_season is None:
+                demo_season = load_current_season()
+            else:
+                demo_season += 1
+                if demo_season > 72:
+                    demo_season = 1
+            microseason = get_microseason_for_number(microseasons, demo_season)
+            if microseason is not None:
+                print_header(printer)
+                print_microseason(printer, microseason)
+            # ignore holding the button: wait for release (with simple debounce)
+            while button.value() == 0:
+                time.sleep(0.05)
+            time.sleep(0.05)
+        else:
+            # print current microseason
+            print('Button pressed')
+            blink_led(1, 0.1)
+            manual_season = load_current_season()
             microseason = get_microseason_for_number(microseasons, manual_season)
             print_header(printer)
             print_microseason(printer, microseason)
             time.sleep(1.5)
+            while button.value() == 0:
+                # print additional microseasons while button held down
+                manual_season += 1
+                if manual_season > 72:
+                        manual_season = 1
+                microseason = get_microseason_for_number(microseasons, manual_season)
+                print_header(printer)
+                print_microseason(printer, microseason)
+                time.sleep(1.5)
             
 
 button = Pin(6, Pin.IN, Pin.PULL_UP)
+
+demo_season = None  # last microseason shown in demo mode; None until first press
 
 next_ntp_sync = 0
 
